@@ -4,9 +4,14 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
+      - uses: wow-actions/use-app-token@v2
+        id: generate_token
+        with:
+          app_id: ${{ secrets.CASS_ID }}
+          private_key: ${{ secrets.CASS_TOKEN }}
       - uses: actions/checkout@v1
       - run: rustup component add clippy
       - uses: actions-rs/clippy-check@v1
         with:
-          token: ${{ secrets.CASS_TOKEN }}
+          token: ${{ steps.generate_token.outputs.BOT_TOKEN }}
           args: --all-features
